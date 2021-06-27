@@ -26,15 +26,16 @@ def search_anomalies(conn):
         print(duplicate)
         cur.execute('SELECT "User name", "Device name" FROM users_logged_tom_devices Where "Login TS" =?',(duplicate,))
         rows = cur.fetchall()
-        cur1.execute('SELECT "User name", "Country" FROM users_countries_list Where "Login TS" =?',(duplicate.encode("ascii"),))
+        cur1.execute('SELECT "User name", "Country" FROM users_countries_list Where "Login TS" =?',(duplicate,))
         rows1 = cur1.fetchall()
         i = 0
         k = 0
         for row in rows:
-            output.append({"userName":row[0].encode("ascii"), "device":row[1].encode("ascii"), "loginTime":duplicate.encode("ascii"),"unexpectedLogin":{}})
+            output.append({"userName":row[0], "device":row[1], "loginTime":duplicate,"unexpectedLogin":{}})
+
             if rows1[i][0].encode("ascii") == row[0].encode("ascii"):
-                output[k]["unexpectedLogin"]["coutry"] = rows1[i][1].encode("ascii")
-                output[k]["unexpectedLogin"]["loginTime"] = duplicate.encode("ascii")
+                output[k]["unexpectedLogin"]["coutry"] = rows1[i][1]
+                output[k]["unexpectedLogin"]["loginTime"] = duplicate
                 i=i+1
             else:
                 output[i]["unexpectedLogin"]='null'
