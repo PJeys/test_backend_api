@@ -1,6 +1,6 @@
 import requests
 
-url = 'http://localhost:5000/api/users/anomalies'
+url = 'http://localhost:5000/api/sessions/byhour'
 X_API_KEY = "fXMWznr92ceoaS5yp8PjcA"
 
 headers = {

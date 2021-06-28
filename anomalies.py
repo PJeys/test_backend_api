@@ -34,7 +34,7 @@ def search_anomalies(conn):
             output.append({"userName":row[0], "device":row[1], "loginTime":duplicate,"unexpectedLogin":{}})
 
             if rows1[i][0].encode("ascii") == row[0].encode("ascii"):
-                output[k]["unexpectedLogin"]["coutry"] = rows1[i][1]
+                output[k]["unexpectedLogin"]["country"] = rows1[i][1]
                 output[k]["unexpectedLogin"]["loginTime"] = duplicate
                 i=i+1
             else:

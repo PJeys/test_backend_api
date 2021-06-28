@@ -18,9 +18,9 @@ def anoms():
         conn = create_connection(database)
         return jsonify(search_anomalies(conn))
     elif auth == None:
-        return "status code 401\n"
+        return jsonify("status code 401")
     else:
-        return "status code 403\n"
+        return jsonify("status code 403")
 
 
 @app.route('/api/registration/bymonth/')
@@ -42,9 +42,9 @@ def month(datemonth=None):
                 return 'status code 404'
             return jsonify(select_all_registrations_by_month(conn, datemonth))
     elif auth == None:
-        return "status code 401\n"
+        return jsonify("status code 401")
     else:
-        return "status code 403\n"
+        return jsonify("status code 403")
 
 
 @app.route('/api/sessions/byhour')
@@ -59,9 +59,9 @@ def logins():
         else:
             return jsonify(login_hourly_stats(conn))
     elif auth == None:
-        return "status code 401\n"
+        return jsonify("status code 401")
     else:
-        return "status code 403\n"
+        return jsonify("status code 403")
 
 
 if __name__ == '__main__':
