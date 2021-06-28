@@ -1,20 +1,34 @@
 To run API you need to follow these steps:
 1. Into file api_client.py add path to database and your API token(you can generate it running create_api_key.py program)
-2. Use command line or app.py to get data
+2. Create Docker image and run it, after that use given url to get responses
+3. Use command line or app.py to get data
 Using command line you need to input "curl -i -H 'x-api-key:YOUR-API-KEY' (api_url)/commands"
+Endpoints of REST API:
+1.User and device registration dynamics endpoint for specific month. Use current month by default.
+Example of the request (no month specified, use valued by default)
 For example executing "curl -i -H 'x-api-key:YOUR-API-KEY' (api_url)/api/users/anomalies" you will get
 [{'device': "John's Tablet", 'loginTime': '2021-07-01 17:35:18', 'unexpectedLogin': {'country': 'Poland', 'loginTime': '2021-07-01 17:35:18'}, 'userName': 'John Smith'}, {'device': "Kate's Laptop", 'loginTime': '2021-07-01 17:35:18', 'unexpectedLogin': 'null', 'userName': 'Kate Olsen'}, {'device': "Kate's Mobile Phone", 'loginTime': '2021-07-01 17:35:18', 'unexpectedLogin': {}, 'userName': 'Kate Olsen'}, {'device': "Jerry's Tablet", 'loginTime': '2021-07-01 17:35:18', 'unexpectedLogin': {'country': 'Germany', 'loginTime': '2021-07-01 17:35:18'}, 'userName': 'Jerry Tron'}]
 if there is data, if not:
 []
+2.User and device registration dynamics endpoint for specific month. Use current month by default.
+Example of the request (no month specified, use valued by default)
 example of request "curl -i -H 'x-api-key:YOUR-API-KEY' (api_url)/api/registration/bymonth"
 output:
 {'month': 'June', 'registeredDevices': [{'type': 'Laptop', 'value': 33}, {'type': 'Mobile phone', 'value': 16}, {'type': 'Tablet', 'value': 5}], 'registeredUsers': 54, 'year': '2021'}
-example of request "curl -i -H 'x-api-key:YOUR-API-KEY' (api_url)/api/sessions/byhour"
-if there ni data:
+if there no data:
 status code 404
+Example of the request (month specified):"curl -i -H 'x-api-key:YOUR-API-KEY' (api_url)/api/registration/bymonth/202106"
+3.Login hourly stats endpoint returning number of concurrent logins, total session time for the hour, and
+cumulative time for the hour. Request should accept start and end time parameters. Both parameters are
+optional.
+Example of the request (no parameters specified, return all available data)
+example of request "curl -i -H 'x-api-key:YOUR-API-KEY' (api_url)/api/sessions/byhour"
 output:
 [{'concurrentSessions': 6, 'date': '2021-05-31', 'hour': 22, 'qumulativeForHour': 14421, 'totalTimeForHour': 321}, {'concurrentSessions': 4, 'date': '2021-05-31', 'hour': 23, 'qumulativeForHour': 14721, 'totalTimeForHour': 300}, {'concurrentSessions': 3, 'date': '2021-06-01', 'hour': 0, 'qumulativeForHour': 200, 'totalTimeForHour': 200}, {'concurrentSessions': 1, 'date': '2021-06-01', 'hour': 1, 'qumulativeForHour': 430, 'totalTimeForHour': 230}, {'concurrentSessions': 0, 'date': '2021-06-01', 'hour': 2, 'qumulativeForHour': 830, 'totalTimeForHour': 400}, {'concurrentSessions': 5, 'date': '2021-06-01', 'hour': 3, 'qumulativeForHour': 955, 'totalTimeForHour': 125}, {'concurrentSessions': 11, 'date': '2021-06-01', 'hour': 4, 'qumulativeForHour': 1300, 'totalTimeForHour': 345}, {'concurrentSessions': 9, 'date': '2021-06-01', 'hour': 5, 'qumulativeForHour': 1500, 'totalTimeForHour': 200}, {'concurrentSessions': 15, 'date': '2021-06-01', 'hour': 6, 'qumulativeForHour': 1600, 'totalTimeForHour': 100}, {'concurrentSessions': 22, 'date': '2021-06-01', 'hour': 7, 'qumulativeForHour': 1900, 'totalTimeForHour': 300}, {'concurrentSessions': 36, 'date': '2021-06-01', 'hour': 8, 'qumulativeForHour': 2900, 'totalTimeForHour': 1000}, {'concurrentSessions': 56, 'date': '2021-06-01', 'hour': 9, 'qumulativeForHour': 3800, 'totalTimeForHour': 700}]
 if there no data:
 []
+Example of the request (start time specified, return starts for sessions after specified time): "curl -i -H 'x-api-key:YOUR-API-KEY' (api_url)/api/sessions/byhour?startTime==2021-06-30T01:00:00"
+Example of the request (end time specified, return starts for sessions before specified time): "curl -i -H 'x-api-key:YOUR-API-KEY' (api_url)/api/sessions/byhour?endTime==2021-06-30T01:00:00"
+Example of the request (start and end time specified, return starts for sessions inside specified time period): "curl -i -H 'x-api-key:YOUR-API-KEY' (api_url)/api/sessions/byhour?startTime==2021-06-30T01:00:00&endTime=2021-06-30T03:00:00"
 To get correct output you need to pass API-key as an "x-api-key" header
 If request does not contain API key return status code 401. If request has incorrect API key return status code 403.
