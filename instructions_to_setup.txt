@@ -32,3 +32,4 @@ Example of the request (end time specified, return starts for sessions before sp
 Example of the request (start and end time specified, return starts for sessions inside specified time period): "curl -i -H 'x-api-key:YOUR-API-KEY' (api_url)/api/sessions/byhour?startTime==2021-06-30T01:00:00&endTime=2021-06-30T03:00:00"
 To get correct output you need to pass API-key as an "x-api-key" header
 If request does not contain API key return status code 401. If request has incorrect API key return status code 403.
+You can also see an example of using the API on Python in the file "app.py"
