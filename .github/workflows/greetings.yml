@@ -1,0 +1,21 @@
+name: Test workflow
+
+on:
+  workflow_run:
+    workflows: ["Python package"]
+    branches: [ develop, master, feature/* ]
+    types: [completed]
+
+jobs:
+  on-success:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Test success
+        run: echo 'SUCCEEDED'
+  on-failure:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    steps:
+      - name: Test success
+        run: echo 'Failed'
